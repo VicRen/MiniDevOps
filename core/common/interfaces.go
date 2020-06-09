@@ -1,4 +1,4 @@
-package core
+package common
 
 import "github.com/VicRen/minidevops/core/common/errors"
 
