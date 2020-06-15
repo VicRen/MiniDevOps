@@ -3,5 +3,5 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("mini DevOps running")
+	fmt.Println("mini DevOps running...")
 }
