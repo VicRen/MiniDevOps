@@ -4,6 +4,8 @@ package minidevops.core;
 
 option go_package="github.com/VicRen/minidevops/core;core";
 
-message Config {
+import "google/protobuf/any.proto";
 
+message Config {
+    repeated google.protobuf.Any features = 1;
 }

@@ -1,10 +1,13 @@
 package core
 
 import (
+	"errors"
+	"log"
 	"reflect"
 	"sync"
 
 	"github.com/VicRen/minidevops/core/common"
+	"github.com/VicRen/minidevops/core/common/serial"
 	"github.com/VicRen/minidevops/core/features"
 )
 
@@ -21,6 +24,66 @@ type Instance struct {
 	features           []features.Feature
 	featureResolutions []resolution
 	running            bool
+}
+
+func New(config *Config) (*Instance, error) {
+	var server = &Instance{}
+
+	for _, feature := range config.Features {
+		af, err := serial.UnmarshalAny(feature)
+		if err != nil {
+			return nil, err
+		}
+		obj, err := CreateObject(server, af)
+		if err != nil {
+			return nil, err
+		}
+		if f, ok := obj.(features.Feature); ok {
+			if err := server.AddFeature(f); err != nil {
+				return nil, err
+			}
+		}
+	}
+
+	if server.featureResolutions != nil {
+		return nil, errors.New("not all dependency are resolved")
+	}
+
+	return server, nil
+}
+
+// AddFeature registers a feature into current Instance.
+func (i *Instance) AddFeature(feature features.Feature) error {
+	i.features = append(i.features, feature)
+
+	if i.running {
+		if err := feature.Start(); err != nil {
+			log.Printf("failed to start feature: %v", err)
+		}
+		return nil
+	}
+
+	if i.featureResolutions == nil {
+		return nil
+	}
+
+	var pendingResolutions []resolution
+	for _, r := range i.featureResolutions {
+		finished, err := r.resolve(i.features)
+		if finished && err != nil {
+			return err
+		}
+		if !finished {
+			pendingResolutions = append(pendingResolutions, r)
+		}
+	}
+	if len(pendingResolutions) == 0 {
+		i.featureResolutions = nil
+	} else if len(pendingResolutions) < len(i.featureResolutions) {
+		i.featureResolutions = pendingResolutions
+	}
+
+	return nil
 }
 
 func (i *Instance) Type() interface{} {
