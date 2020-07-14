@@ -8,13 +8,26 @@ import (
 	"runtime"
 	"syscall"
 
+	"github.com/VicRen/minidevops/core/app/task"
+
+	"github.com/VicRen/minidevops/core/app/exporter"
+	"github.com/VicRen/minidevops/core/common/serial"
+	"github.com/golang/protobuf/ptypes/any"
+
 	"github.com/VicRen/minidevops/core"
 )
 
 func main() {
 	flag.Parse()
 
-	config := &core.Config{}
+	config := &core.Config{
+		Features: []*any.Any{
+			serial.MarshalAny(&task.Config{}),
+			serial.MarshalAny(&exporter.Config{
+				Address: "0.0.0.0:10988",
+			}),
+		},
+	}
 	s, err := core.New(config)
 	if err != nil {
 		log.Fatal(err)

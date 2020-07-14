@@ -5,5 +5,5 @@ package MiniDevOps.core.app.exporter;
 option go_package="github.com/VicRen/MiniDevOps/core/app/exporter";
 
 message Config {
-
+    string address = 1;
 }

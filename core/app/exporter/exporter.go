@@ -2,12 +2,21 @@ package exporter
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"sync"
 
+	"github.com/VicRen/minidevops/core/common"
 	"github.com/VicRen/minidevops/core/features/exporter"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 type Handler struct {
+	config        *Config
+	cLock         sync.RWMutex
 	counterMap    map[string]prometheus.Counter
 	gaugeMap      map[string]prometheus.Gauge
 	histogramMap  map[string]prometheus.Histogram
@@ -19,6 +28,7 @@ func New(ctx context.Context, config *Config) (*Handler, error) {
 	h := &Handler{
 		counterMap: make(map[string]prometheus.Counter),
 	}
+	h.config = config
 	return h, nil
 }
 
@@ -27,14 +37,38 @@ func (h *Handler) Type() interface{} {
 }
 
 func (h *Handler) Start() error {
-	return nil
+	fmt.Println("----->Exporter start")
+	http.Handle("/metrics", promhttp.Handler())
+	if len(h.config.Address) > 0 {
+		go func() {
+			fmt.Println("----->listing on:", h.config.Address)
+			if err := http.ListenAndServe(h.config.Address, nil); err != nil {
+				panic(err)
+			}
+		}()
+		return nil
+	}
+	return fmt.Errorf("invalid address: %s", h.config.Address)
 }
 
 func (h *Handler) Close() error {
+	fmt.Println("----->Exporter close")
 	return nil
 }
 
 func (h *Handler) CounterInc(name string, labels map[string]string) error {
+	newName := name + labelString(labels)
+	c, ok := h.counterMap[newName]
+	if ok {
+		c.Inc()
+		return nil
+	}
+	c = promauto.NewCounter(prometheus.CounterOpts{
+		Name:        name,
+		Help:        "testing-help",
+		ConstLabels: labels,
+	})
+	h.counterMap[newName] = c
 	return nil
 }
 
@@ -54,5 +88,16 @@ func (h *Handler) SummaryObserve(name string, labels map[string]string, value fl
 	return nil
 }
 
+func labelString(labels map[string]string) string {
+	buf, err := json.Marshal(labels)
+	if err != nil {
+		return ""
+	}
+	return string(buf)
+}
+
 func init() {
+	common.Must(common.RegisterConfig((*Config)(nil), func(ctx context.Context, config interface{}) (interface{}, error) {
+		return New(ctx, config.(*Config))
+	}))
 }

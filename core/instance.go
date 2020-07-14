@@ -1,12 +1,14 @@
 package core
 
 import (
+	"context"
 	"errors"
 	"log"
 	"reflect"
 	"sync"
 
 	"github.com/VicRen/minidevops/core/common"
+	errors2 "github.com/VicRen/minidevops/core/common/errors"
 	"github.com/VicRen/minidevops/core/common/serial"
 	"github.com/VicRen/minidevops/core/features"
 )
@@ -24,6 +26,11 @@ type Instance struct {
 	features           []features.Feature
 	featureResolutions []resolution
 	running            bool
+}
+
+func RequireFeatures(ctx context.Context, callback interface{}) error {
+	v := MustFromContext(ctx)
+	return v.RequireFeatures(callback)
 }
 
 func New(config *Config) (*Instance, error) {
@@ -50,6 +57,30 @@ func New(config *Config) (*Instance, error) {
 	}
 
 	return server, nil
+}
+
+// RequireFeatures registers a callback, which will be called when all dependent features are registered.
+// The callback must be a func(). All its parameters must be features.Feature.
+func (i *Instance) RequireFeatures(callback interface{}) error {
+	callbackType := reflect.TypeOf(callback)
+	if callbackType.Kind() != reflect.Func {
+		panic("not a function")
+	}
+
+	var featureTypes []reflect.Type
+	for i := 0; i < callbackType.NumIn(); i++ {
+		featureTypes = append(featureTypes, reflect.PtrTo(callbackType.In(i)))
+	}
+
+	r := resolution{
+		deps:     featureTypes,
+		callback: callback,
+	}
+	if finished, err := r.resolve(i.features); finished {
+		return err
+	}
+	i.featureResolutions = append(i.featureResolutions, r)
+	return nil
 }
 
 // AddFeature registers a feature into current Instance.
@@ -96,6 +127,12 @@ func (i *Instance) Start() error {
 
 	i.running = true
 
+	for _, f := range i.features {
+		if err := f.Start(); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -104,6 +141,16 @@ func (i *Instance) Close() error {
 	defer i.access.Unlock()
 
 	i.running = false
+
+	var errs []error
+	for _, f := range i.features {
+		if err := f.Close(); err != nil {
+			errs = append(errs, err)
+		}
+	}
+	if len(errs) > 0 {
+		return errors2.Combine(errs...)
+	}
 
 	return nil
 }
