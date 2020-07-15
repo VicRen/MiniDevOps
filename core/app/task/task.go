@@ -26,14 +26,19 @@ func (h *Handler) Type() interface{} {
 
 func (h *Handler) Start() error {
 	h.ticker = time.NewTicker(5 * time.Second)
+	count := 0.
 	go func() {
 		for {
 			select {
 			case <-h.ticker.C:
-				if err := h.exporter.CounterInc("testing_by_mini_devops", map[string]string{"testing1": "testing1", "testing2": "string2"}); err != nil {
+				if count > 50 {
+					count = 1
+				}
+				if err := h.exporter.GaugeSet("testing_by_mini_devops_gauge", map[string]string{"testing1": "testing1", "testing2": "string2"}, count); err != nil {
 					panic(err)
 				}
-				fmt.Println("---->task tick")
+				count += 5
+				fmt.Println("---->task tick", count)
 			}
 		}
 	}()

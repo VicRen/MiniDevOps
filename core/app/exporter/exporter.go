@@ -27,6 +27,7 @@ type Handler struct {
 func New(ctx context.Context, config *Config) (*Handler, error) {
 	h := &Handler{
 		counterMap: make(map[string]prometheus.Counter),
+		gaugeMap:   make(map[string]prometheus.Gauge),
 	}
 	h.config = config
 	return h, nil
@@ -69,6 +70,7 @@ func (h *Handler) CounterInc(name string, labels map[string]string) error {
 		ConstLabels: labels,
 	})
 	h.counterMap[newName] = c
+	c.Inc()
 	return nil
 }
 
@@ -77,6 +79,19 @@ func (h *Handler) CounterAdd(name string, labels map[string]string) error {
 }
 
 func (h *Handler) GaugeSet(name string, labels map[string]string, value float64) error {
+	newName := name + labelString(labels)
+	c, ok := h.gaugeMap[newName]
+	if ok {
+		c.Set(value)
+		return nil
+	}
+	c = promauto.NewGauge(prometheus.GaugeOpts{
+		Name:        name,
+		Help:        "testing-gauge-help",
+		ConstLabels: labels,
+	})
+	h.gaugeMap[newName] = c
+	c.Set(value)
 	return nil
 }
 
