@@ -3,7 +3,7 @@ package features
 import (
 	"reflect"
 
-	"github.com/vicren/minidevops/core/common"
+	"github.com/vicren/covid-away/core/common"
 )
 
 // Feature is the interface for Galaxy features. All features must implement this interface.

@@ -7,12 +7,13 @@
 package core
 
 import (
+	reflect "reflect"
+	sync "sync"
+
 	proto "github.com/golang/protobuf/proto"
 	any "github.com/golang/protobuf/ptypes/any"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
 )
 
 const (
@@ -104,11 +105,11 @@ func file_MiniDevOps_core_config_proto_rawDescGZIP() []byte {
 
 var file_MiniDevOps_core_config_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_MiniDevOps_core_config_proto_goTypes = []interface{}{
-	(*Config)(nil),  // 0: minidevops.core.Config
+	(*Config)(nil),  // 0: covid-away.core.Config
 	(*any.Any)(nil), // 1: google.protobuf.Any
 }
 var file_MiniDevOps_core_config_proto_depIdxs = []int32{
-	1, // 0: minidevops.core.Config.features:type_name -> google.protobuf.Any
+	1, // 0: covid-away.core.Config.features:type_name -> google.protobuf.Any
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

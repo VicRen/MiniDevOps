@@ -1,6 +1,6 @@
 package exporter
 
-import "github.com/vicren/minidevops/core/features"
+import "github.com/vicren/covid-away/core/features"
 
 type Handler interface {
 	features.Feature

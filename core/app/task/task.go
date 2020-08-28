@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/vicren/minidevops/core"
-	"github.com/vicren/minidevops/core/common"
-	"github.com/vicren/minidevops/core/features/exporter"
+	"github.com/vicren/covid-away/core"
+	"github.com/vicren/covid-away/core/common"
+	"github.com/vicren/covid-away/core/features/exporter"
 )
 
 type Handler struct {

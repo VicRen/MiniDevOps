@@ -1,8 +1,8 @@
 syntax="proto3";
 
-package minidevops.core;
+package covid-away.core;
 
-option go_package="github.com/vicren/minidevops/core;core";
+option go_package="github.com/vicren/covid-away/core;core";
 
 import "google/protobuf/any.proto";
 

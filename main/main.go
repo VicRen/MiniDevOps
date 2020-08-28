@@ -8,13 +8,13 @@ import (
 	"runtime"
 	"syscall"
 
-	"github.com/vicren/minidevops/core/app/task"
+	"github.com/vicren/covid-away/core/app/task"
 
 	"github.com/golang/protobuf/ptypes/any"
-	"github.com/vicren/minidevops/core/app/exporter"
-	"github.com/vicren/minidevops/core/common/serial"
+	"github.com/vicren/covid-away/core/app/exporter"
+	"github.com/vicren/covid-away/core/common/serial"
 
-	"github.com/vicren/minidevops/core"
+	"github.com/vicren/covid-away/core"
 )
 
 func main() {

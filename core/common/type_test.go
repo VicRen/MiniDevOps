@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	. "github.com/vicren/minidevops/core/common"
+	. "github.com/vicren/covid-away/core/common"
 )
 
 type TConfig struct {

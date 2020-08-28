@@ -1,4 +1,4 @@
-module github.com/vicren/minidevops
+module github.com/vicren/covid-away
 
 go 1.13
 
