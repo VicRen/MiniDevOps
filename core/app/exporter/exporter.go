@@ -7,11 +7,11 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/VicRen/minidevops/core/common"
-	"github.com/VicRen/minidevops/core/features/exporter"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/vicren/minidevops/core/common"
+	"github.com/vicren/minidevops/core/features/exporter"
 )
 
 type Handler struct {

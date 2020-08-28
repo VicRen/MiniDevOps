@@ -1,6 +1,6 @@
 package sunwell
 
-import "github.com/VicRen/minidevops/core/features"
+import "github.com/vicren/minidevops/core/features"
 
 type Sunwell interface {
 	features.Feature

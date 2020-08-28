@@ -7,10 +7,10 @@ import (
 	"reflect"
 	"sync"
 
-	"github.com/VicRen/minidevops/core/common"
-	errors2 "github.com/VicRen/minidevops/core/common/errors"
-	"github.com/VicRen/minidevops/core/common/serial"
-	"github.com/VicRen/minidevops/core/features"
+	"github.com/vicren/minidevops/core/common"
+	errors2 "github.com/vicren/minidevops/core/common/errors"
+	"github.com/vicren/minidevops/core/common/serial"
+	"github.com/vicren/minidevops/core/features"
 )
 
 type Server interface {

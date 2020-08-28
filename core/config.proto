@@ -2,7 +2,7 @@ syntax="proto3";
 
 package minidevops.core;
 
-option go_package="github.com/VicRen/minidevops/core;core";
+option go_package="github.com/vicren/minidevops/core;core";
 
 import "google/protobuf/any.proto";
 

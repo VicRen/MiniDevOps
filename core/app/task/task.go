@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/VicRen/minidevops/core"
-	"github.com/VicRen/minidevops/core/common"
-	"github.com/VicRen/minidevops/core/features/exporter"
+	"github.com/vicren/minidevops/core"
+	"github.com/vicren/minidevops/core/common"
+	"github.com/vicren/minidevops/core/features/exporter"
 )
 
 type Handler struct {

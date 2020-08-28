@@ -1,4 +1,4 @@
-module github.com/VicRen/minidevops
+module github.com/vicren/minidevops
 
 go 1.13
 

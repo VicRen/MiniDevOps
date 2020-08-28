@@ -8,13 +8,13 @@ import (
 	"runtime"
 	"syscall"
 
-	"github.com/VicRen/minidevops/core/app/task"
+	"github.com/vicren/minidevops/core/app/task"
 
-	"github.com/VicRen/minidevops/core/app/exporter"
-	"github.com/VicRen/minidevops/core/common/serial"
 	"github.com/golang/protobuf/ptypes/any"
+	"github.com/vicren/minidevops/core/app/exporter"
+	"github.com/vicren/minidevops/core/common/serial"
 
-	"github.com/VicRen/minidevops/core"
+	"github.com/vicren/minidevops/core"
 )
 
 func main() {

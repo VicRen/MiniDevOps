@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	. "github.com/VicRen/minidevops/core/common"
+	. "github.com/vicren/minidevops/core/common"
 )
 
 func TestMust(t *testing.T) {

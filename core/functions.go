@@ -3,7 +3,7 @@ package core
 import (
 	"context"
 
-	"github.com/VicRen/minidevops/core/common"
+	"github.com/vicren/minidevops/core/common"
 )
 
 // CreateObject creates a new object based on the given Galaxy instance and config. The Galaxy instance may be nil.

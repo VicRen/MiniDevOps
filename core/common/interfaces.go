@@ -1,6 +1,6 @@
 package common
 
-import "github.com/VicRen/minidevops/core/common/errors"
+import "github.com/vicren/minidevops/core/common/errors"
 
 // Closable is the interface for objects that can release its resources.
 type Closable interface {
