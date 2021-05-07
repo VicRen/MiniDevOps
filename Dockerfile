@@ -1,5 +1,5 @@
 FROM docker.io/alpine
 
-ADD ./build/miniDevOps /covid-away/miniDevOps
+ADD ./build/covid-away /covid-away/covid-away
 
-CMD /covid-away/miniDevOps
+CMD /covid-away/covid-away

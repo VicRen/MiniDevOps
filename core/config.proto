@@ -1,6 +1,6 @@
 syntax="proto3";
 
-package covid-away.core;
+package covidaway.core;
 
 option go_package="github.com/vicren/covid-away/core;core";
 

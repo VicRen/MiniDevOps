@@ -1,8 +1,8 @@
 syntax="proto3";
 
-package MiniDevOps.core.app.exporter;
+package covidaway.core.app.exporter;
 
-option go_package="github.com/vicren/MiniDevOps/core/app/exporter";
+option go_package="github.com/vicren/covid-away/core/app/exporter";
 
 message Config {
     string address = 1;
